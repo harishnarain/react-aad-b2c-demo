@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/typography';
 import Button from '@material-ui/core/Button';
 
 import NavigationItems from '../NavigationItems/NavigationItems';
-import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 
 const useStyles = makeStyles((theme) => ({
     root: {
