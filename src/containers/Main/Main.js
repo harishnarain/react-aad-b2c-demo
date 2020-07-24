@@ -1,84 +1,129 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
-import { AzureAD, AuthenticationState } from "react-aad-msal";
-import { authProvider } from "../../authProvider";
-import { store } from "../../index";
+import { useStore } from "../../hooks-store/store";
+import checkAccount from "../../components/auth/checkAccount";
+import signIn from "../../components/auth/signIn";
+import signOut from "../../components/auth/signOut";
+import acquireToken from "../../components/auth/acquireToken";
 
-class Main extends Component {
-  render() {
-    return (
-      <div>
-        <h2>Login Info</h2>
-        <AzureAD provider={authProvider} reduxStore={store}>
-          {({ accountInfo, authenticationState, error }) => {
-            return (
-              <React.Fragment>
-                {authenticationState ===
-                  AuthenticationState.Unauthenticated && (
-                  <div>
-                    <p>Currently not logged in!</p>
-                  </div>
-                )}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minWidth: 275,
+    maxWidth: 500,
+    "& > *": {
+      margin: theme.spacing(3),
+    },
+    padding: "10px 20px",
+  },
+  title: {
+    fontSize: 14,
+  },
+}));
 
-                <div className="SampleContainer">
-                  <div className="SampleBox">
-                    <h2 className="SampleHeader">Authenticated Values</h2>
-                    <p>
-                      When logged in, this box will show your tokens and user
-                      info
-                    </p>
-                    {accountInfo && (
-                      <div style={{ wordWrap: "break-word" }}>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>ID Token:</span>{" "}
-                          {accountInfo.jwtIdToken}
-                        </p>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>Username:</span>{" "}
-                          {accountInfo.account.userName}
-                        </p>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>
-                            Access Token:
-                          </span>{" "}
-                          {accountInfo.jwtAccessToken}
-                        </p>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>Name:</span>{" "}
-                          {accountInfo.account.name}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="SampleBox">
-                    <h2 className="SampleHeader">Errors</h2>
-                    <p>
-                      If authentication fails, this box will have the errors
-                      that occurred
-                    </p>
-                    {error && (
-                      <div style={{ wordWrap: "break-word" }}>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>errorCode:</span>{" "}
-                          {error.errorCode}
-                        </p>
-                        <p>
-                          <span style={{ fontWeight: "bold" }}>
-                            errorMessage:
-                          </span>{" "}
-                          {error.errorMessage}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </React.Fragment>
-            );
-          }}
-        </AzureAD>
-      </div>
+const Main = () => {
+  const classes = useStyles();
+  const [state, dispatch] = useStore(true);
+
+  useEffect(() => {
+    checkAccount().then((user) => {
+      if (user !== "is_error_or_null") {
+        dispatch("AUTH_SUCCESS", user);
+      } else {
+        dispatch("AUTH_CLEAR_STATUS");
+      }
+    });
+  }, []);
+
+  const signInHandler = () => {
+    dispatch("AUTH_START");
+    signIn();
+  };
+
+  const signOutHandler = () => {
+    dispatch("AUTH_CLEAR_STATUS");
+    signOut(state.auth.username);
+  };
+
+  const acquireTokenHandler = () => {
+    if (state.auth.username !== null) {
+      acquireToken(state.auth.username).then((response) => {
+        dispatch("AUTH_UPDATE_TOKEN", response);
+      });
+    } else {
+      console.error("No user logged in");
+    }
+  };
+
+  let authButton = null;
+
+  if (!state.auth.isAuthenticated) {
+    authButton = (
+      <Button variant="contained" onClick={signInHandler}>
+        Sign in
+      </Button>
+    );
+  } else {
+    authButton = (
+      <Button variant="contained" onClick={signOutHandler}>
+        Sign out
+      </Button>
     );
   }
-}
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h5" gutterBottom>
+        Login Info
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        Authentication Status: {state.auth.authStatus}
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        ID: {state.auth.id}
+      </Typography>
+      <Typography variant="body2" gutterBottom>
+        User Name: {state.auth.username}
+      </Typography>
+      <Card>
+        <CardContent>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            ID Token
+          </Typography>
+          <Typography variant="body2" component="p">
+            {state.auth.idToken}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <Typography
+            className={classes.title}
+            color="textSecondary"
+            gutterBottom
+          >
+            Access Token
+          </Typography>
+          <Typography variant="body2" component="p">
+            {state.auth.accessToken}
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {authButton}
+      <Button variant="contained" onClick={acquireTokenHandler}>
+        Acquire token
+      </Button>
+    </div>
+  );
+};
 
 export default Main;

@@ -1,9 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Azure AD B2C with React/Redux/MSAL.js Demo
+# Azure AD with React/React Hooks/MSAL.js 2.x Demo
 
-Here is a demo that I put together using the react-add-msal package created by the open source community.
-More information can be found here: https://github.com/syncweek-react-aad/react-aad#readme
+Here is a sign on page I put together to demo sign on capabilities in React with React Hooks and the MSAL.js 2.0 library. 
+More information on MSAL.js 2.0 can be found here: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-javascript-auth-code
 
 ## Installation
 
@@ -22,7 +22,7 @@ npm start
 
 ## Usage
 
-Update the clientId section of the /src/authProvider.js file to include your specific application ID from your Azure AD B2C instance.
+Update the clientId section of the /src/authConfig.js file to include your specific application ID from your Azure AD application registration.
 
 ## Contributing
 Pull requests are welcome.

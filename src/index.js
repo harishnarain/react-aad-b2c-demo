@@ -1,36 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import createSagaMiddleware from "redux-saga";
 
 import "fontsource-roboto";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import authReducer from "./store/reducers/auth";
+import configureAuthStore from "./hooks-store/authStore";
 
-const composeEnhancers =
-  process.env.NODE_ENV === "development"
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : null || compose;
-
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
-
-const sagaMiddleware = createSagaMiddleware();
-
-export const store = createStore(rootReducer, composeEnhancers());
+configureAuthStore();
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

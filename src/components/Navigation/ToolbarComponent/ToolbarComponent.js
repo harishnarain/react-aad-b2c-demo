@@ -40,7 +40,7 @@ const ToolbarComponent = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <NavigationItems isAuthenticated={props.isAuth} />
+          <NavigationItems />
         </Toolbar>
       </AppBar>
     </div>

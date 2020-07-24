@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 
 import Aux from "../Aux/Aux";
 import Toolbar from "../../components/Navigation/ToolbarComponent/ToolbarComponent";
@@ -14,10 +13,4 @@ const Layout = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isAuthenticated: state.auth.idToken !== null,
-  };
-};
-
-export default connect(mapStateToProps)(Layout);
+export default Layout;
