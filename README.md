@@ -9,7 +9,7 @@ More information on MSAL.js 2.0 can be found here: https://docs.microsoft.com/en
 
 1. Clone this GitHub repository
 ```bash
-git clone https://https://github.com/harishnarain/react-aad-b2c-demo
+git clone https://github.com/harishnarain/react-aad-b2c-demo
 ```
 2. Install all dependent npm packages
 ```bash
