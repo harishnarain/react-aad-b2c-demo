@@ -1,5 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 # Azure AD with React/React Hooks/MSAL.js 2.x Demo
 
 Here is a sign on page I put together to demo sign on capabilities in React with React Hooks and the MSAL.js 2.0 library. 
@@ -21,8 +19,18 @@ npm start
 ```
 
 ## Usage
-
 Update the clientId section of the /src/authConfig.js file to include your specific application ID from your Azure AD application registration.
+
+## Screenshots
+![Screenshot](https://github.com/harishnarain/react-aad-b2c-demo/blob/master/react-aad-msal_screenshot.gif)
+
+## Technologies used
+* Microsoft Authentication Library (MSAL) for JS
+* ReactJS
+* Material-UI
+
+## License
+MIT License
 
 ## Contributing
 Pull requests are welcome.
