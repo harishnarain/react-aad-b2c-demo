@@ -1,7 +1,7 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Aux from "../../../hoc/Aux/Aux";
+import Aux from "../../../hoc/Auxilary/Auxilary";
 
 const useStyles = makeStyles((theme) => ({
   root: {
